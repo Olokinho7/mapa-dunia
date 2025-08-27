@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa Interativo - Região Dunia</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="map-container">
+    <img src="mapa-dunia.png" alt="Mapa da Região Dunia" class="map" />
+    
+    <!-- Pontos das cidades (coordenadas ajustadas) -->
+    <div class="city" style="top: 18%; left: 23%;" data-city="solaria"></div>
+    <div class="city" style="top: 38%; left: 47%;" data-city="kaalu"></div>
+    <div class="city" style="top: 62%; left: 10%;" data-city="sapphire"></div>
+    <div class="city" style="top: 70%; left: 38%;" data-city="lunaro"></div>
+    <div class="city" style="top: 55%; left: 63%;" data-city="verdancia"></div>
+    <div class="city" style="top: 88%; left: 45%;" data-city="drakestone"></div>
+    <div class="city" style="top: 22%; left: 82%;" data-city="aurora"></div>
+    <div class="city" style="top: 67%; left: 88%;" data-city="sylvara"></div>
+  </div>
+
+  <!-- Tooltip -->
+  <div id="tooltip" class="tooltip"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+body {
+  margin: 0;
+  background: #1b1b1b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.map-container {
+  position: relative;
+  max-width: 90%;
+}
+
+.map {
+  width: 100%;
+  border: 2px solid #fff;
+  border-radius: 8px;
+}
+
+.city {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: red;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s;
+}
+
+.city:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  display: none;
+  pointer-events: none;
+  z-index: 10;
+}
+
+const cities = {
+  solaria: {
+    name: "Solaria City",
+    description: "Cidade tecnológica no deserto.\nPokémon comuns: Sandshrew, Trapinch, Growlithe."
+  },
+  kaalu: {
+    name: "Ka’alu Town",
+    description: "Centro cultural com ruínas antigas.\nPokémon comuns: Pidgey, Oddish, Buneary."
+  },
+  sapphire: {
+    name: "Sapphire Bay",
+    description: "Vila pesqueira costeira.\nPokémon comuns: Wingull, Magikarp, Krabby."
+  },
+  lunaro: {
+    name: "Lunaro Village",
+    description: "Cidade espiritual com templos antigos.\nPokémon comuns: Gastly, Ralts, Sableye."
+  },
+  verdancia: {
+    name: "Verdancia Town",
+    description: "Florestas agrícolas.\nPokémon comuns: Caterpie, Combee, Petilil."
+  },
+  drakestone: {
+    name: "Drakestone City",
+    description: "Cavernas montanhosas lendárias.\nPokémon comuns: Dratini, Onix, Mawile."
+  },
+  aurora: {
+    name: "Aurora Port",
+    description: "Porto comercial com influências estrangeiras.\nPokémon comuns: Tentacool, Lapras, Delibird."
+  },
+  sylvara: {
+    name: "Sylvara Village",
+    description: "Vila em harmonia com a floresta.\nPokémon comuns: Deerling, Sewaddle, Cutiefly."
+  }
+};
+
+const tooltip = document.getElementById("tooltip");
+const cityElements = document.querySelectorAll(".city");
+
+cityElements.forEach(city => {
+  city.addEventListener("mouseenter", (e) => {
+    const cityData = cities[city.dataset.city];
+    tooltip.innerHTML = `<strong>${cityData.name}</strong><br>${cityData.description.replace(/\n/g, "<br>")}`;
+    tooltip.style.display = "block";
+  });
+
+  city.addEventListener("mousemove", (e) => {
+    tooltip.style.left = e.pageX + 15 + "px";
+    tooltip.style.top = e.pageY + 15 + "px";
+  });
+
+  city.addEventListener("mouseleave", () => {
+    tooltip.style.display = "none";
+  });
+});
